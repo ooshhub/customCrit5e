@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
-// Github:   https://github.com/ooshhub/customCrit5e/
+// Github:   Nah
 // By:       Some idiot
 // Contact:  the police
 const customCrit5e = (() => { // eslint-disable-line no-unused-vars
@@ -153,7 +153,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
             })
         }
         if (!Array.isArray(npcArray) || npcArray.length < 1) return sendAlert('gm','NPC array is empty, aborting.', null, null, 'error');
-        //log(`NPC Array: ${npcArray}`);
+        //clog(`NPC Array: ${npcArray}`);
         let repSecName = (settings.npcSetting === 'pc') ? cs.sheet.repeatingSectionName.pc : cs.sheet.repeatingSectionName.npc
         let idArray = [], attrArray = [], idArraySpells = [], attrArraySpells = [], outputArray = [];
         let counterTotal = {actions: 0, modded: 0, error: 0, ignored: 0}, npcIndex = 0;
@@ -209,7 +209,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                             counterTotal.error ++;
                         }
                     }
-                    //log(outputArray);
+                    //clog(outputArray);
                     setRepAttrs(npc, outputArray);
                     counterTotal.actions += counterAttack.all + counterSpell.all;
                     counterTotal.modded += counterAttack.modded + counterSpell.modded;
@@ -534,7 +534,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                             clog(`Can't find attribute: ${sectionPrefix}$${index}_${attrName}`)
                             if (createMissing) {
                                 let x = createObj('attribute', {characterid: charId, name: `${sectionPrefix}${row}_${attrName}`, current: '', max: ''});
-                                //log(`Missing attribute created!`);
+                                //clog(`Missing attribute created!`);
                                 rowObj[attrName] = {id: x.id, current: '', max: ''}
                             }
                         } else {
@@ -566,7 +566,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
     }
 
     const getTokenIds = (targetType) => {
-        log(lastSelected);
+        clog(lastSelected);
         if (targetType === 'sel') {
             let idArray = lastSelected
                 .filter((o) => o._type === 'graphic')
@@ -617,7 +617,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
     }
 
     const rollEscape = (rollExpression) => {
-        return rollExpression.replace(/\]/g,'&rsqb;').replace(/\[/g,'&lsqb;').replace(/,/g,'&#44;').replace('/}/g','&#125;').replace(/\*/g,'&#42;');
+        return rollExpression.replace(/\]/g,'&rsqb;').replace(/\[/g,'&lsqb;').replace(/,/g,'&#44;').replace('/}/g','&#125;').replace(/\*/g,'&#42;').replace(/@/g, '&commat;');
     }
 
     const settingsMenu = (args) => {
