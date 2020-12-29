@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
-// Github:   Nah
+// Github:   https://github.com/ooshhub/customCrit5e/
 // By:       Some idiot
 // Contact:  the police
 const customCrit5e = (() => { // eslint-disable-line no-unused-vars
