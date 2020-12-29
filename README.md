@@ -49,3 +49,9 @@ Settings menu:
 	Logging Mode:		Change this if you want critBot to be more talkative. Can send more info to console,
 				or to chat if you prefer.
 				
+Example command line:
+
+!critbot --apply --attacks --spells --page
+
+This would modify all character sheets with tokens on the current GM's page, applying the current custom crit rule
+(from Settings) to all attacks & spells with valid damage fields.
