@@ -304,7 +304,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                                 } else { // if description has been edited by critBot before
                                     Object.assign(rowObj, {[namesArray[10]]: {
                                         id: row[namesArray[10]].id,
-                                        current: `${row[namesArray[10]].max.replace(settings.backupString, '')}@{${row.prefix}${row.rowId}_critbotmods}`}});
+                                        current: `${row[namesArray[10]].max.replace(settings.backupString, '')}@{${row.prefix}{row.rowId}_critbotmods}`}});
                                 }
                                 descModFlag = 1;
                                 attacksLog.unshift(`${row[namesArray[12]].current}|td|Description modded & backed up.`);
