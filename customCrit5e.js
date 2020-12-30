@@ -418,6 +418,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                         break;
                     case 'range':
                     case 'critrange':
+                        if (!args[0]) args[0] = settings.dieSize;
                         if (args[0] && !isNaN(args[0]) && 0 < args[0] && args[0] <= settings.dieSize) critRange = args[0];
                         break;
                     case 'repsec': // format is --repsec npc|pc|spells repeating_secname_$<whatever>
