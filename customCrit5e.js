@@ -1,16 +1,15 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-unused-vars */
+/* globals state, log, sendChat, getAttrByName, findObjs, getObj, createObj, on, playerIsGM */
 // Github:   Nah
 // By:       Some idiot
 // Contact:  the police
 const customCrit5e = (() => { // eslint-disable-line no-unused-vars
-    const version = '0.2';
+    const version = '0.2.1';
     const lastUpdate = 1608288295927;
     const schemaVersion = 0.2;
     const cs = {}        // object to hold current values for sheet settings
     
     const checkInstall = () =>  {
-        if (!state.hasOwnProperty('customCrit5e') || state.customCrit5e.version !== schemaVersion) {
+        if (!state.customCrit5e || state.customCrit5e.version !== schemaVersion) {
             log(`customCrit5e  > Updating Schema from ${state.customCrit5e.version} to v${schemaVersion} <`);
             switch(state.customCrit5e.version) {
                 case 0.1:
@@ -28,8 +27,8 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
         if (state.customCrit5e.critRuleCustom) preset.critRules.custom = state.customCrit5e.critRuleCustom;
         if (state.customCrit5e.dieType) settings.dieType = state.customCrit5e.dieType;
         if (state.customCrit5e.logMode) settings.logMode = state.customCrit5e.logMode;
-        let sheet = (state.customCrit5e.hasOwnProperty('sheet') && Object.keys(preset.sheet).includes(state.customCrit5e.sheet)) ? state.customCrit5e.sheet : 'default';
-        let crit = (state.customCrit5e.hasOwnProperty('critRule') && Object.keys(preset.critRules).includes(state.customCrit5e.critRuleName)) ? state.customCrit5e.critRuleName : 'default';
+        let sheet = (state.customCrit5e.sheet && Object.keys(preset.sheet).includes(state.customCrit5e.sheet)) ? state.customCrit5e.sheet : 'default';
+        let crit = (state.customCrit5e.critRule && Object.keys(preset.critRules).includes(state.customCrit5e.critRuleName)) ? state.customCrit5e.critRuleName : 'default';
         updateCSObject(sheet, crit, true);
         settings.npcSetting = (state.customCrit5e.npcSetting) ? state.customCrit5e.npcSetting : 'npc';
         log(`==( customCrit5e v${version} )== [${(new Date(lastUpdate))}] ... sheet setting: ${state.customCrit5e.sheet}, crit setting: ${state.customCrit5e.critRuleName}.`);
@@ -94,7 +93,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                     npcaction: '',
                     npc: ((attr) => attr.get('current') == 1),
                     pc: ((attr) => attr.get('current') == 0),
-                    all: ((attr) => true),
+                    all: (v => v),
                     attacksPCOnly: (row)=>row.spelllevel.current.search(/(^\d+|^cantrip)/i) === -1,
                     spellsPCOnly: (row)=>row.spelllevel.current.search(/(^\d+|^cantrip)/i) !== -1,
                 }
@@ -209,7 +208,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                             counterTotal.error ++;
                         }
                     }
-                    //clog(outputArray);
+                    // log(outputArray);
                     setRepAttrs(npc, outputArray);
                     counterTotal.actions += counterAttack.all + counterSpell.all;
                     counterTotal.modded += counterAttack.modded + counterSpell.modded;
@@ -250,6 +249,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                             counterTotal.error ++;
                         }
                     }
+                    // log(outputArray);
                     setRepAttrs(npc, outputArray);
                     counterTotal.actions += counterAttack.all + counterSpell.all;
                     counterTotal.modded += counterAttack.modded + counterSpell.modded;
@@ -296,15 +296,17 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                                 Object.assign(rowObj, {[namesArray[15]]: {
                                     id: row[namesArray[15]].id,
                                     current: `${override.replace(/{{rowId}}/ig, `${row.prefix}${row.rowId}`)}`}});
-                                if (row[namesArray[10]].max.search(settings.backupString) === -1) {  // if description has not be edited before
+                                if (row[namesArray[10]].current.search(/critbotmod/i) === -1) {  // if description doesn't contain critbodmod, make a backup
                                     Object.assign(rowObj, {[namesArray[10]]: {
                                         id: row[namesArray[10]].id,
                                         current: `${row[namesArray[10]].current}@{${row.prefix}${row.rowId}_critbotmods}`,
-                                        max: `${row[namesArray[10]].current}${settings.backupString}`}});
-                                } else { // if description has been edited by critBot before
+                                        max: `${row[namesArray[10]].current}${settings.backupString}`
+                                    }});
+                                } else { // if description already has crit
                                     Object.assign(rowObj, {[namesArray[10]]: {
                                         id: row[namesArray[10]].id,
-                                        current: `${row[namesArray[10]].max.replace(settings.backupString, '')}@{${row.prefix}${row.rowId}_critbotmods}`}});
+                                        current: `${row[namesArray[10]].current}@{${row.prefix}${row.rowId}_critbotmods}`,
+                                    }});
                                 }
                                 descModFlag = 1;
                                 attacksLog.unshift(`${row[namesArray[12]].current}|td|Description modded & backed up.`);
@@ -331,7 +333,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
         return attacksLog;
     }
 
-    const revertAction = (namesArray, inputArray, outputArray, counter, npcname) => { // undo changes to sheet - only removes @{critbotmods} reference & restores description
+    const revertAction = (namesArray, inputArray, outputArray, counter, /* npcname */) => { // undo changes to sheet - only removes @{critbotmods} reference & restores description
         let revertLog = [];
         inputArray.forEach(row => {
             let rowObj = {}, modFlag = 0, descRestore;
@@ -349,9 +351,11 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
                 modFlag = 1;
             }
             if (modFlag === 1) {
+                descRestore = descRestore || ' ';
                 Object.assign(rowObj, {[namesArray[10]]: {
                     id: row[namesArray[10]].id,
-                    current: descRestore,}});
+                    current: descRestore
+                }});
                 counter.modded ++;
                 revertLog.push(`${row[namesArray[12]].current}|td|Description field restored.`);
             }
@@ -381,7 +385,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
 
 
     const handleInput = (msg) => {
-        if (msg.type !== "api" || msg.content.search(/^!critBot\s/i) === -1 || !playerIsGM(msg.playerid)) return;
+        if (msg.type !== "api" || !/^!critBot\s/i.test(msg.content) || !playerIsGM(msg.playerid)) return;
         let commands = msg.content.split(/\s*--\s*/)
         commands.shift();
         lastPlayerId = msg.playerid;
@@ -557,9 +561,9 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
         if (getObj('character', charId)) {
             attrArray.forEach(row => {
                 for (let attr in row) {
-                    if (row[attr].hasOwnProperty('id')) {
-                        if (row[attr].hasOwnProperty('current')) getObj('attribute', row[attr].id).set('current', row[attr].current)
-                        if (row[attr].hasOwnProperty('max')) {getObj('attribute', row[attr].id).set('max', row[attr].max)}
+                    if (row[attr].id) {
+                        if (row[attr].current) getObj('attribute', row[attr].id).set('current', row[attr].current)
+                        if (row[attr].max) {getObj('attribute', row[attr].id).set('max', row[attr].max)}
                     }
                 }
             })
@@ -569,7 +573,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
     const getTokenIds = (targetType) => {
         clog(lastSelected);
         if (targetType === 'sel') {
-            let idArray = lastSelected
+            let idArray = (lastSelected||[])
                 .filter((o) => o._type === 'graphic')
                 .map((t) => t._id);
             if (!idArray || !idArray.length > 0) {
