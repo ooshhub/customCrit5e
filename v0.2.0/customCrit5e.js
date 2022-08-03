@@ -4,7 +4,7 @@
 // By:       Some idiot
 // Contact:  the police
 const customCrit5e = (() => { // eslint-disable-line no-unused-vars
-    const version = '0.2';
+    const version = '0.2.0';
     const lastUpdate = 1608288295927;
     const schemaVersion = 0.2;
     const cs = {}        // object to hold current values for sheet settings
