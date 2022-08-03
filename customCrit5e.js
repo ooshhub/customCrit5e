@@ -3,24 +3,25 @@
 // By:       Some idiot
 // Contact:  the police
 const customCrit5e = (() => { // eslint-disable-line no-unused-vars
-    const version = '0.2.1';
-    const lastUpdate = 1608288295927;
-    const schemaVersion = 0.2;
+    const scriptVersion = '0.2.1';
+    const lastUpdate = 1659516876478;
     const cs = {}        // object to hold current values for sheet settings
     
     const checkInstall = () =>  {
-        if (!state.customCrit5e || state.customCrit5e.version !== schemaVersion) {
-            log(`customCrit5e  > Updating Schema from ${state.customCrit5e.version} to v${schemaVersion} <`);
+        if (!state.customCrit5e) state.customCrit5e = { version : '0.0.0' };
+        if (state.customCrit5e.version < scriptVersion) {
+            log(`customCrit5e  > Updating script from ${state.customCrit5e.version} to v${scriptVersion} <`);
             switch(state.customCrit5e.version) {
-                case 0.1:
+                case '0.1': {
                     log(`Outdated test version found, deleting State object entries...`);
                     delete state.customCrit5e;
                     // falls through
-                case '':
-                    state.customCrit5e = {
-                        version: schemaVersion,
-                    };
+                }
+                case '0.2':
+                case '0.2.0': {
+                    state.customCrit5e.version = scriptVersion;
                     break;
+                }
             }
         } // update core sheet information and custom rules
         if (state.customCrit5e.regex && Object.keys(preset.regexSets).includes(state.customCrit5e)) {cs.regex = preset.regexSets[state.customCrit5e.regex]} else cs.regex = preset.regexSets[settings.defaultRegex];
@@ -31,7 +32,8 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
         let crit = (state.customCrit5e.critRule && Object.keys(preset.critRules).includes(state.customCrit5e.critRuleName)) ? state.customCrit5e.critRuleName : 'default';
         updateCSObject(sheet, crit, true);
         settings.npcSetting = (state.customCrit5e.npcSetting) ? state.customCrit5e.npcSetting : 'npc';
-        log(`==( customCrit5e v${version} )== [${(new Date(lastUpdate))}] ... sheet setting: ${state.customCrit5e.sheet}, crit setting: ${state.customCrit5e.critRuleName}.`);
+        log(`==( customCrit5e v${scriptVersion} )== [${(new Date(lastUpdate))}] ... sheet setting: ${state.customCrit5e.sheet}, crit setting: ${state.customCrit5e.critRuleName}.`);
+        log(state.customCrit5e);
     };
 
     const style = {
