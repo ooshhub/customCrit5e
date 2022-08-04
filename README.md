@@ -16,7 +16,7 @@ There is a full changelog written each time the script does anything. Click thro
 
 #### Syntax: ####
 ```
-!critbot --apply|revert --sel|page|global (--attacks --spells --critrange --reset --settings)
+!critbot --apply|revert --sel|page|global [--attacks | --spells | --critrange 19 | --reset | --settings]
 ```
 #### Required ####
 &emsp;**--apply|revert** : --apply will make changes to character sheets, while --revert will remove them. These arguments 
