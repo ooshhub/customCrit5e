@@ -18,7 +18,7 @@ Syntax:
 
 !critbot --apply|revert --sel|page|global (--attacks --spells --critrange --reset --settings)
 
-Required: 
+Required:  
 	--apply|revert : --apply will make changes to character sheets, while --revert will remove them. These arguments 
 		do nothing by themselves, but tell the other commands what do to.
 .
@@ -27,14 +27,14 @@ Required:
 		in the Journal
 		
 Optional:
-- --attacks:	anything with a damage roll in the sheets attacks list will be modified
-- --spells:	any spells with attack/damage data will be modified
-	--critrange X:	critrange will be modified to the specified number. Must be between 1 and the core die size.
-	--reset:	reset the sheet settings & crit rule settings. Use this is it all goes FUBAR.
+\n--attacks:	anything with a damage roll in the sheets attacks list will be modified
+--spells:	any spells with attack/damage data will be modified
+--critrange X:	critrange will be modified to the specified number. Must be between 1 and the core die size.
+--reset:	reset the sheet settings & crit rule settings. Use this is it all goes FUBAR.
 	--settings:	brings up the Settings menu
 	
 Settings menu:
-	Character Sheet:	only 5e by Roll20 is available, but other sheets can be added.
+	Character Sheet:	only 5e by Roll20 is available, but other sheets can be added.  
 	Crit Rule:		what you want the dice to do to calculate crit damage. Default is brutal crits,
 				XX\*YY where XX is the number of dice, YY is the die type. The other variable is
 				MM which will will grab any modifier from the damage. For example, if the weapon
