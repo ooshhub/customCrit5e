@@ -27,8 +27,8 @@ Required:
 		in the Journal
 		
 Optional:
-	--attacks:	anything with a damage roll in the sheets attacks list will be modified
-	--spells:	any spells with attack/damage data will be modified
+- --attacks:	anything with a damage roll in the sheets attacks list will be modified
+- --spells:	any spells with attack/damage data will be modified
 	--critrange X:	critrange will be modified to the specified number. Must be between 1 and the core die size.
 	--reset:	reset the sheet settings & crit rule settings. Use this is it all goes FUBAR.
 	--settings:	brings up the Settings menu
