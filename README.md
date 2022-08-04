@@ -18,14 +18,14 @@ Syntax:
 ```
 !critbot --apply|revert --sel|page|global (--attacks --spells --critrange --reset --settings)
 ```
-#### Required####
+#### Required ####
 &emsp;**--apply|revert** : --apply will make changes to character sheets, while --revert will remove them. These arguments 
 		do nothing by themselves, but tell the other commands what do to.  
 &emsp;**--sel|page|global:** --sel will modify character sheets linked to the currently selected tokens, --page will modify
 		character sheets attached to all tokens on the GM's current page, and --global will modify every sheet
 		in the Journal
 		
-#### Optional:####  
+#### Optional: ####  
 &emsp;**--attacks:**	anything with a damage roll in the sheets attacks list will be modified  
 &emsp;**--spells:**	any spells with attack/damage data will be modified  
 &emsp;**--critrange X:**	critrange will be modified to the specified number. Must be between 1 and the core die size.  
@@ -48,7 +48,7 @@ Syntax:
 &emsp;**Logging Mode:**		Change this if you want critBot to be more talkative. Can send more info to console,
 				or to chat if you prefer.  
 				
-#### Example command line:####
+#### Example command line: ####
 ```
 !critbot --apply --attacks --spells --page
 ```
