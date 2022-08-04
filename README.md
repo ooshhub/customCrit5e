@@ -14,7 +14,7 @@ By default, the sheet only changes NPC sheets. This behaviour can be changed in 
 
 There is a full changelog written each time the script does anything. Click through in the chat log if you want details.
 
-Syntax:
+#### Syntax: ####
 ```
 !critbot --apply|revert --sel|page|global (--attacks --spells --critrange --reset --settings)
 ```
@@ -24,7 +24,8 @@ Syntax:
 &emsp;**--sel|page|global:** --sel will modify character sheets linked to the currently selected tokens, --page will modify
 		character sheets attached to all tokens on the GM's current page, and --global will modify every sheet
 		in the Journal
-		
+
+
 #### Optional: ####  
 &emsp;**--attacks:**	anything with a damage roll in the sheets attacks list will be modified  
 &emsp;**--spells:**	any spells with attack/damage data will be modified  
@@ -32,7 +33,8 @@ Syntax:
 &emsp;**--reset:**	reset the sheet settings & crit rule settings. Use this is it all goes FUBAR.  
 &emsp;**--settings:**	brings up the Settings menu  
 	
-####Settings menu:####  
+	
+#### Settings menu: ####  
 &emsp;**Character Sheet:**	only 5e by Roll20 is available, but other sheets can be added.   
 &emsp;**Crit Rule:**		what you want the dice to do to calculate crit damage. Default is brutal crits,
 				XX\*YY where XX is the number of dice, YY is the die type. The other variable is
@@ -47,7 +49,8 @@ Syntax:
 &emsp;**Process PC Sheets:**	Change this if you want to process PC sheets instead of NPC.  
 &emsp;**Logging Mode:**		Change this if you want critBot to be more talkative. Can send more info to console,
 				or to chat if you prefer.  
-				
+		
+		
 #### Example command line: ####
 ```
 !critbot --apply --attacks --spells --page
