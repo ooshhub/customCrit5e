@@ -29,6 +29,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
           break;
         }
       }
+      state.customCrit5e.version = scriptVersion;
     } // update core sheet information and custom rules
     if (state.customCrit5e.regex && Object.keys(preset.regexSets).includes(state.customCrit5e)) { cs.regex = preset.regexSets[state.customCrit5e.regex] } else cs.regex = preset.regexSets[settings.defaultRegex];
     if (state.customCrit5e.critRuleCustom) preset.critRules.custom = state.customCrit5e.critRuleCustom;
