@@ -1,10 +1,8 @@
 /* globals state, log, sendChat, getAttrByName, findObjs, getObj, createObj, on, playerIsGM, _ */
-// Github:   Nah
-// By:       Some idiot
-// Contact:  the police
+
 const customCrit5e = (() => { // eslint-disable-line no-unused-vars
-  const scriptVersion = '0.2.2';
-  const lastUpdate = 1661660791459;
+  const scriptVersion = '0.2.5';
+  const lastUpdate = 1661734837311;
   const cs = {}; // object to hold current values for sheet settings
   const scriptName = 'critBot';
 
@@ -154,11 +152,11 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
       charIds.forEach(id => {
         if (getAttrByName(id, 'npc') == npcFlag) {
           npcArray.push(id);
-          clog(`${getObj('character', id).get('name')} added`)
+          clog(`${getObj('character', id).get('name')} added`);
         }
       })
     }
-    if (!Array.isArray(npcArray) || npcArray.length < 1) return sendAlert('gm', 'NPC array is empty, aborting.', null, null, 'error');
+    if (!Array.isArray(npcArray) || npcArray.length < 1) return sendAlert('gm', `No valid character sheets found from command, aborting. Script is currently in *${settings.npcSetting === 'pc' ? 'PC' : 'NPC'}* mode.`, null, null, 'error');
     //clog(`NPC Array: ${npcArray}`);
     let repSecName = (settings.npcSetting === 'pc') ? cs.sheet.repeatingSectionName.pc : cs.sheet.repeatingSectionName.npc
     let idArray = [], attrArray = [], idArraySpells = [], attrArraySpells = [], outputArray = [];
@@ -587,7 +585,6 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
   }
 
   const getTokenIds = (targetType) => {
-    clog(lastSelected);
     if (targetType === 'sel') {
       let idArray = (lastSelected || [])
         .filter((o) => o._type === 'graphic')
@@ -649,16 +646,17 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
       }
       let customLabel = (state.customCrit5e.critRuleName !== 'custom') ? 'disabled' : (cs.critRule) ? rollEscape(cs.critRule) : 'empty';
       let customCommand = (state.customCrit5e.critRuleName === 'custom') ? `!critbot --settings critrule,custom,&quest;{Enter custom crit rule: XX - number of dice ... YY - size of die ... MM - other modifiers found in damage field ... e.g. **&lsqb;#&lsqb;2&#42;XX&rsqb;#&rsqb;dYY - MM** would turn 2d6+5 damage into a 4d6-5 crit -- Inline rolls brackets must be separated with a #, [#[2&#42;XX]#]|[#[2*XX]#]dYY}` : '#';
-      let npcLabel = (settings.npcSetting === 'pc') ? 'On' : 'Off (default)';
+      let npcLabel = (settings.npcSetting === 'pc') ? 'PC' : 'NPC (default)';
       let logLabel = (settings.logMode === 'silent') ? 'Silent (default)' : (settings.logMode === 'chat') ? 'Chat' : 'Console';
       let settingsArray = [`Character Sheet|td|[${preset.sheet[state.customCrit5e.sheet].description}](!critbot --settings sheet,&quest;{Select sheet|5e by Roll20,r205e|Custom,custom}" style="${style.stdHref})`,
       `Crit rule|td|[${state.customCrit5e.critRuleName}](!critbot --settings critrule,&quest;{Select crit rule${critList}}" style="${style.stdHref})`,
       `Custom crit rule|td|[${customLabel}](${customCommand}" style="${style.stdHref})`,
       `Core die size|td|[${settings.dieSize}](!critbot --settings dieSize,&quest;{Enter die type|20&#125;" style="${style.stdHref})`,
-      `Process PC sheets|td|[${npcLabel}](!critbot --settings npcsetting,&quest;{Process player character sheets?|Off (default&rpar;,npc|On,pc&#125;" style="${style.stdHref})`,
+      `Process PC/NPC sheets|td|[${npcLabel}](!critbot --settings npcsetting,&quest;{Process PC or NPC sheets?|NPC (default&rpar;,npc|PC,pc&#125;" style="${style.stdHref})`,
       `Logging mode|td|[${logLabel}](!critbot --settings logmode,&quest;{Miscellaneous logging setting|Silent (default&rpar;,silent|Console,console|Chat,chat&rcub;" style="${style.stdHref})`,
       ];
-      sendChat(scriptName, makeTable(`Settings - v${scriptVersion}`, settingsArray, [2, 30, 70], 'std'), null, { noarchive: true });
+      const chatContent = makeTable(`Settings - v${scriptVersion}`, settingsArray, [2, 30, 70], 'std');
+      sendChat(scriptName, `/w gm ${chatContent}`, null, { noarchive: true });
     } else {
       let setString;
       switch (args[0].toLowerCase()) {
@@ -685,7 +683,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
           break;
         case 'npcsetting':
           settings.npcSetting = (args[1] === 'pc') ? 'pc' : 'npc';
-          setString = (args[1] === 'pc') ? `Player characters will now be processed.` : `NPC sheets will now be processed`;
+          setString = (args[1] === 'pc') ? `Only PC sheets will now be processed.` : `Only NPC sheets will now be processed`;
           sendAlert('gm', setString, null, null, 'std');
           state.customCrit5e.npcSetting = (args[1] === 'pc') ? 'pc' : 'npc';
           break;
@@ -704,14 +702,13 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
     let who = (toWhom) ? `/w "${toWhom}" ` : ''
     let buttonHtml = '';
     let Href = `${substyle}Href`, Td = `${substyle}Td`;
-
     if (buttonLabel && buttonCommand) buttonHtml = `<br>[${buttonLabel}](${buttonCommand}" style="${style[Href]})`;
     let table = `<table class="${substyle}" style="${style[substyle]}"><tr><td style="${style[Td]}">${text}${buttonHtml}</td></tr></table>`
-    sendChat('', `${who}${table}`, null, { noarchive: true });
+    sendChat(scriptName, `${who}${table}`, null, { noarchive: true });
   }
 
   const makeTable = (title, content, columns, substyle = 'std') => { // columns in form of [numColumns, %width ... %width]
-    let /* Href = `${substyle}Href`,  */Td = `${substyle}Td`, Th = `${substyle}Th`, Caption = `${substyle}Caption`;
+    let Td = `${substyle}Td`, Th = `${substyle}Th`, Caption = `${substyle}Caption`;
     if (!Array.isArray(content)) content = [content];
     if (!Array.isArray(columns)) columns = [columns];
     if (content.length < 1) return `${header}<tr><td>Empty Table!</td></tr>${footer}`
