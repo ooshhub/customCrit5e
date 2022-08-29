@@ -46,7 +46,7 @@ There is a full changelog written each time the script does anything. Click thro
 				modifiers. Other math operators will be left where they are. Has not been very
 				well tested, use with caution.  
 &emsp;**Core Die Size:**		Does what it says on the tin. Changing this has little effect for now.
-&emsp;**Process PC Sheets:**	Change this if you want to process PC sheets instead of NPC.  
+&emsp;**NPC/PC Sheets:**	Toggles between processing NPC sheets (default) or PC sheets.
 &emsp;**Logging Mode:**		Change this if you want critBot to be more talkative. Can send more info to console,
 				or to chat if you prefer.  
 		
