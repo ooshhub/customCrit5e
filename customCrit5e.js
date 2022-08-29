@@ -38,7 +38,7 @@ const customCrit5e = (() => { // eslint-disable-line no-unused-vars
     updateCSObject(sheet, crit, true);
     settings.npcSetting = (state.customCrit5e.npcSetting) ? state.customCrit5e.npcSetting : 'npc';
     log(`==( customCrit5e v${scriptVersion} )== [${(new Date(lastUpdate))}] ... sheet setting: ${state.customCrit5e.sheet}, crit setting: ${state.customCrit5e.critRuleName}.`);
-    log(state.customCrit5e);
+    // log(state.customCrit5e);
   };
 
   const style = {
