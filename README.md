@@ -27,7 +27,7 @@ There is a full changelog written each time the script does anything. Click thro
 
 
 #### Optional: ####  
-&emsp;**--attacks:**	anything with a damage roll in the sheets attacks list will be modified  
+&emsp;**--attacks:**	anything with a damage roll in the sheets attacks list will be modified
 &emsp;**--spells:**	any spells with attack/damage data will be modified  
 &emsp;**--critrange X:**	critrange will be modified to the specified number. Must be between 1 and the core die size.  
 &emsp;**--reset:**	reset the sheet settings & crit rule settings. Use this is it all goes FUBAR.  
@@ -35,21 +35,25 @@ There is a full changelog written each time the script does anything. Click thro
 	
 	
 #### Settings menu: ####  
-&emsp;**Character Sheet:**	only 5e by Roll20 is available, but other sheets can be added.   
+&emsp;**Character Sheet:**	only 5e by Roll20 is available, but other sheets can be added. 
+
 &emsp;**Crit Rule:**		what you want the dice to do to calculate crit damage. Default is brutal crits,
 				XX\*YY where XX is the number of dice, YY is the die type. The other variable is
 				MM which will will grab any modifier from the damage. For example, if the weapon
 				damage is "2d6 + 5" and your crit rule is (2\*XX)dYY + (2\*MM), the script would
-				change the crit calculation to 4d6 + 10 for that weapon.  
+				change the crit calculation to 4d6 + 10 for that weapon. 
+				
 &emsp;**Custom Crit Rule:**	Crit Rule must be set to "Custom" to activate the custom rule field. Type in your
 				own rule - XX will be replaced with the number of dice, YY with die size, MM with 
 				modifiers. Other math operators will be left where they are. Has not been very
-				well tested, use with caution.  
-&emsp;**Core Die Size:**		Does what it says on the tin. Changing this has little effect for now.
+				well tested, use with caution. 
+				
+&emsp;**Core Die Size:**	Does what it says on the tin. Changing this has little effect for now. 
+
 &emsp;**NPC/PC Sheets:**	Toggles between processing NPC sheets (default) or PC sheets.
+
 &emsp;**Logging Mode:**		Change this if you want critBot to be more talkative. Can send more info to console,
-				or to chat if you prefer.  
-		
+				or to chat if you prefer. 	
 		
 #### Example command line: ####
 ```
